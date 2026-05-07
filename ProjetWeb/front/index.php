@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="mt-10 text-center">
                 <p class="text-slate-400">
                     Pas encore de compte ? 
-                    <a href="register.php" class="text-yellow-400 hover:text-amber-300 font-semibold transition">
+                    <a href="../mvc/inscriptionForm.php" class="text-yellow-400 hover:text-amber-300 font-semibold transition">
                         Créer un compte
                     </a>
                 </p>
