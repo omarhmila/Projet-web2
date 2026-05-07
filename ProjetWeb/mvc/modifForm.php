@@ -10,6 +10,7 @@ if ($id === '') {
 $us = new utilisateur();
 $res = $us->getuser($id);
 $data = $res->fetch(PDO::FETCH_ASSOC);
+$error = $_GET['error'] ?? '';
 
 if (!$data) {
     header('Location: liste.php');
@@ -28,11 +29,17 @@ if (!$data) {
         input { width: 100%; padding: .6rem; margin: .4rem 0 1rem; }
         button { padding: .6rem 1rem; }
         .hint { color: #555; font-size: .9rem; }
+        .err { color: red; }
     </style>
 </head>
 <body>
 <div class="box">
     <h2>Modifier utilisateur</h2>
+
+    <?php if ($error): ?>
+        <p class="err"><?= htmlspecialchars($error) ?></p>
+    <?php endif; ?>
+
     <form method="POST" action="modification.php" id="editForm">
         <input type="hidden" name="cin" value="<?= htmlspecialchars($data['user_cin']) ?>">
 

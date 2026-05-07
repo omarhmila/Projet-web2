@@ -16,7 +16,7 @@ $us = new utilisateur();
 $us->user_nom = trim($_POST['nom'] ?? '');
 
 if ($us->user_nom === '') {
-    header('Location: modifForm.php?id=' . urlencode($cin));
+    header('Location: modifForm.php?id=' . urlencode($cin) . '&error=Nom%20obligatoire');
     exit();
 }
 

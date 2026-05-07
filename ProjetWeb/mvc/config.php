@@ -13,7 +13,8 @@ class connexion
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $pdo;
         } catch (PDOException $e) {
-            die('Erreur de connexion : ' . $e->getMessage());
+            error_log('DB connection error: ' . $e->getMessage());
+            die('Erreur de connexion à la base de données.');
         }
     }
 }

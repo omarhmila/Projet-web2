@@ -5,15 +5,21 @@ class utilisateur
 {
     public $user_cin;
     public $user_nom;
+    private static $tableInitialized = false;
 
     private function getPdo()
     {
         $cnx = new connexion();
         $pdo = $cnx->CNXbase();
-        $pdo->exec("CREATE TABLE IF NOT EXISTS utilisateur (
-            user_cin VARCHAR(20) PRIMARY KEY,
-            user_nom VARCHAR(100) NOT NULL
-        )");
+
+        if (!self::$tableInitialized) {
+            $pdo->exec("CREATE TABLE IF NOT EXISTS utilisateur (
+                user_cin VARCHAR(20) PRIMARY KEY,
+                user_nom VARCHAR(100) NOT NULL
+            )");
+            self::$tableInitialized = true;
+        }
+
         return $pdo;
     }
 

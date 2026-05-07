@@ -15,6 +15,8 @@ $lastUserName = $_COOKIE['last_user_name'] ?? '';
         table { border-collapse: collapse; width: 100%; }
         th, td { border: 1px solid #ddd; padding: .6rem; }
         th { background: #f2f2f2; }
+        .inline-form { display: inline; }
+        .btn-link { background: none; border: none; color: #06c; text-decoration: underline; cursor: pointer; padding: 0; }
     </style>
 </head>
 <body>
@@ -38,7 +40,12 @@ $lastUserName = $_COOKIE['last_user_name'] ?? '';
                 <td><?= htmlspecialchars($row['user_cin']) ?></td>
                 <td><?= htmlspecialchars($row['user_nom']) ?></td>
                 <td><a href="modifForm.php?id=<?= urlencode($row['user_cin']) ?>">Modifier</a></td>
-                <td><a href="sup.php?id=<?= urlencode($row['user_cin']) ?>" onclick="return confirm('Supprimer cet utilisateur ?');">Supprimer</a></td>
+                <td>
+                    <form method="POST" action="sup.php" class="inline-form" onsubmit="return confirm('Supprimer cet utilisateur ?');">
+                        <input type="hidden" name="id" value="<?= htmlspecialchars($row['user_cin']) ?>">
+                        <button type="submit" class="btn-link">Supprimer</button>
+                    </form>
+                </td>
             </tr>
         <?php endforeach; ?>
     </table>
