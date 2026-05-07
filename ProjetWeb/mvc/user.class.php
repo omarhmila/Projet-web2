@@ -3,77 +3,71 @@ require_once(__DIR__ . '/config.php');
 
 class utilisateur
 {
-    public $user_id;
+    public $user_cin;
     public $user_nom;
-    public $user_email;
 
-    public function insertuser()
+    private function getPdo()
     {
         $cnx = new connexion();
         $pdo = $cnx->CNXbase();
+        $pdo->exec("CREATE TABLE IF NOT EXISTS utilisateur (
+            user_cin VARCHAR(20) PRIMARY KEY,
+            user_nom VARCHAR(100) NOT NULL
+        )");
+        return $pdo;
+    }
 
-        $req = "INSERT INTO users (nom, prenom, email, telephone, date_naissance, genre, password, role)
-                VALUES (:nom, :prenom, :email, :telephone, :date_naissance, :genre, :password, :role)";
+    public function insertuser()
+    {
+        $pdo = $this->getPdo();
+        $req = "INSERT INTO utilisateur (user_cin, user_nom) VALUES (:cin, :nom)";
         $stmt = $pdo->prepare($req);
         $stmt->execute([
+            ':cin' => $this->user_cin,
             ':nom' => $this->user_nom,
-            ':prenom' => '',
-            ':email' => $this->user_email,
-            ':telephone' => '',
-            ':date_naissance' => '2000-01-01',
-            ':genre' => 'Autre',
-            ':password' => password_hash('123456', PASSWORD_DEFAULT),
-            ':role' => 'client'
         ]);
     }
 
     public function listusers()
     {
-        $cnx = new connexion();
-        $pdo = $cnx->CNXbase();
-        $req = "SELECT id, nom, email FROM users ORDER BY id DESC";
-        return $pdo->query($req);
+        $pdo = $this->getPdo();
+        return $pdo->query("SELECT user_cin, user_nom FROM utilisateur ORDER BY user_nom ASC");
     }
 
     public function getuser($id)
     {
-        $cnx = new connexion();
-        $pdo = $cnx->CNXbase();
-        $req = "SELECT id, nom, email FROM users WHERE id = :id";
+        $pdo = $this->getPdo();
+        $req = "SELECT user_cin, user_nom FROM utilisateur WHERE user_cin = :cin";
         $stmt = $pdo->prepare($req);
-        $stmt->execute([':id' => $id]);
+        $stmt->execute([':cin' => $id]);
         return $stmt;
     }
 
     public function modifier_user($id)
     {
-        $cnx = new connexion();
-        $pdo = $cnx->CNXbase();
-        $req = "UPDATE users SET nom = :nom, email = :email WHERE id = :id";
+        $pdo = $this->getPdo();
+        $req = "UPDATE utilisateur SET user_nom = :nom WHERE user_cin = :cin";
         $stmt = $pdo->prepare($req);
         $stmt->execute([
             ':nom' => $this->user_nom,
-            ':email' => $this->user_email,
-            ':id' => $id
+            ':cin' => $id,
         ]);
     }
 
     public function supprimer_user($id)
     {
-        $cnx = new connexion();
-        $pdo = $cnx->CNXbase();
-        $req = "DELETE FROM users WHERE id = :id";
+        $pdo = $this->getPdo();
+        $req = "DELETE FROM utilisateur WHERE user_cin = :cin";
         $stmt = $pdo->prepare($req);
-        $stmt->execute([':id' => $id]);
+        $stmt->execute([':cin' => $id]);
     }
 
     public function recherche_user()
     {
-        $cnx = new connexion();
-        $pdo = $cnx->CNXbase();
-        $req = "SELECT count(*) FROM users WHERE email = :email";
+        $pdo = $this->getPdo();
+        $req = "SELECT count(*) FROM utilisateur WHERE user_cin = :cin";
         $stmt = $pdo->prepare($req);
-        $stmt->execute([':email' => $this->user_email]);
+        $stmt->execute([':cin' => $this->user_cin]);
         return $stmt;
     }
 }

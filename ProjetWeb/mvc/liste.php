@@ -28,19 +28,17 @@ $lastUserName = $_COOKIE['last_user_name'] ?? '';
 
     <table>
         <tr>
-            <th>ID</th>
+            <th>CIN</th>
             <th>Nom</th>
-            <th>Email</th>
             <th>Modifier</th>
             <th>Supprimer</th>
         </tr>
         <?php foreach ($res as $row): ?>
             <tr>
-                <td><?= htmlspecialchars((string)$row['id']) ?></td>
-                <td><?= htmlspecialchars($row['nom']) ?></td>
-                <td><?= htmlspecialchars($row['email']) ?></td>
-                <td><a href="modifForm.php?id=<?= urlencode((string)$row['id']) ?>">Modifier</a></td>
-                <td><a href="sup.php?id=<?= urlencode((string)$row['id']) ?>" onclick="return confirm('Supprimer cet utilisateur ?');">Supprimer</a></td>
+                <td><?= htmlspecialchars($row['user_cin']) ?></td>
+                <td><?= htmlspecialchars($row['user_nom']) ?></td>
+                <td><a href="modifForm.php?id=<?= urlencode($row['user_cin']) ?>">Modifier</a></td>
+                <td><a href="sup.php?id=<?= urlencode($row['user_cin']) ?>" onclick="return confirm('Supprimer cet utilisateur ?');">Supprimer</a></td>
             </tr>
         <?php endforeach; ?>
     </table>

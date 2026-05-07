@@ -6,22 +6,21 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-$id = $_POST['id'] ?? '';
-if (!is_numeric($id)) {
+$cin = trim($_POST['cin'] ?? '');
+if ($cin === '') {
     header('Location: liste.php');
     exit();
 }
 
 $us = new utilisateur();
 $us->user_nom = trim($_POST['nom'] ?? '');
-$us->user_email = trim($_POST['email'] ?? '');
 
-if ($us->user_nom === '' || $us->user_email === '') {
-    header('Location: modifForm.php?id=' . urlencode((string)$id));
+if ($us->user_nom === '') {
+    header('Location: modifForm.php?id=' . urlencode($cin));
     exit();
 }
 
-$us->modifier_user((int)$id);
+$us->modifier_user($cin);
 setcookie('last_user_name', $us->user_nom, time() + 86400 * 7, '/');
 header('Location: liste.php');
 exit();

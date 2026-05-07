@@ -1,14 +1,14 @@
 <?php
 require_once(__DIR__ . '/user.class.php');
 
-$id = $_GET['id'] ?? '';
-if (!is_numeric($id)) {
+$id = trim($_GET['id'] ?? '');
+if ($id === '') {
     header('Location: liste.php');
     exit();
 }
 
 $us = new utilisateur();
-$res = $us->getuser((int)$id);
+$res = $us->getuser($id);
 $data = $res->fetch(PDO::FETCH_ASSOC);
 
 if (!$data) {
@@ -34,13 +34,13 @@ if (!$data) {
 <div class="box">
     <h2>Modifier utilisateur</h2>
     <form method="POST" action="modification.php" id="editForm">
-        <input type="hidden" name="id" value="<?= htmlspecialchars((string)$data['id']) ?>">
+        <input type="hidden" name="cin" value="<?= htmlspecialchars($data['user_cin']) ?>">
+
+        <label for="cin_display">CIN</label>
+        <input type="text" id="cin_display" value="<?= htmlspecialchars($data['user_cin']) ?>" disabled>
 
         <label for="nom">Nom</label>
-        <input type="text" id="nom" name="nom" value="<?= htmlspecialchars($data['nom']) ?>" required>
-
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" value="<?= htmlspecialchars($data['email']) ?>" required>
+        <input type="text" id="nom" name="nom" value="<?= htmlspecialchars($data['user_nom']) ?>" required>
 
         <p class="hint">DOM : longueur du nom = <span id="nomLength">0</span></p>
         <button type="submit">Enregistrer</button>

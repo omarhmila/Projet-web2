@@ -36,11 +36,11 @@ $error = $_GET['error'] ?? '';
     <?php endif; ?>
 
     <form method="POST" action="inscription.php" id="userForm">
+        <label for="cin">CIN</label>
+        <input type="text" id="cin" name="cinuser" required>
+
         <label for="nom">Nom</label>
         <input type="text" id="nom" name="nomuser" required>
-
-        <label for="email">Email</label>
-        <input type="email" id="email" name="emailuser" required>
 
         <p class="hint">Aperçu DOM : <span id="preview">Aucun nom saisi</span></p>
         <button type="submit" id="submitBtn" disabled>Ajouter</button>
@@ -50,22 +50,22 @@ $error = $_GET['error'] ?? '';
 </div>
 
 <script>
+const cinInput = document.getElementById('cin');
 const nomInput = document.getElementById('nom');
-const emailInput = document.getElementById('email');
 const preview = document.getElementById('preview');
 const submitBtn = document.getElementById('submitBtn');
 
 function refreshDomState() {
+    const cin = cinInput.value.trim();
     const nom = nomInput.value.trim();
-    const email = emailInput.value.trim();
 
     preview.textContent = nom ? nom : 'Aucun nom saisi';
-    submitBtn.disabled = nom.length < 2 || !email.includes('@');
+    submitBtn.disabled = cin.length < 4 || nom.length < 2;
 }
 
+cinInput.addEventListener('input', refreshDomState);
 nomInput.addEventListener('input', refreshDomState);
-emailInput.addEventListener('input', refreshDomState);
-nomInput.focus();
+cinInput.focus();
 </script>
 </body>
 </html>
